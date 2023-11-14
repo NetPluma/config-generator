@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    {% block head_content %} 
+    
+    {% endblock%}
+
+
+    {% block title %}
+
+    {% endblock %}
+
+</head>
+<body>
+    {% block header %}
+
+    {% endblock %}
+
+
+    {% block nav %}
+
+    {% endblock %}
+
+
+    <main>
+        {% block content %}
+        <!-- This block will be overridden by child templates -->
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+
+    {% endblock %}
+
+
+    {% block alert %}
+
+    {% endblock %}
+</body>
+
+{% block scripts %}
+
+{% endblock %}
+
+</html>
