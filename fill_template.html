@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body{
+            background-color: rgb(44, 44, 44);
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            }
+            
+        textarea{
+            background-color: rgb(21, 32, 43);
+            border: 5px,solid, rgb(33, 50, 68);
+            border-radius: 5px;
+            color: white;
+            padding: 15px;
+            line-height: 140%;
+        }
+
+        .textarea-input-field {
+            width: 40vw;
+            object-fit: contain;
+        }
+        .textarea-grid-container{
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .textarea-grid-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+            justify-content: center;
+        }
+
+ 
+
+        @media (max-width: 600px) {
+        .textarea-grid-container { 
+            grid-template-columns: repeat(1, 1fr); 
+        }
+        .textarea-input-field {
+            width: 80vw;
+        }
+        }
+    </style>
+</head>
+<body>
+<form>
+    <div class="textarea-grid-wrapper">
+            <div class="textarea-grid-container">
+                <h2><label for="yaml-input">YAML</label></h2>
+                <textarea class="textarea-input-field" id="yaml-input" name="yaml-input" rows="15" cols="50">At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.</textarea>
+                <br>
+            </div>
+
+            <div class="textarea-grid-container">
+                <h2><label for="jinja-template">Template</label></h2>
+                <textarea class="textarea-input-field" id="jinja-template" name="jinja-template" rows="15" cols="50">At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.</textarea>
+                <br>
+            </div>
+    </div>
+    
+    <input type="submit" value="Submit">
+</form>
+<p>Click the "Submit" button and the form-data will be sent to a page on the 
+server called "action_page.php".</p>
+test
+</body>
+</html>
