@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+    {% csrf_token %}
 <head>
     <link rel="stylesheet" href="{% static 'css/general.css' %}">
     {% block head_content %} 
@@ -42,7 +43,7 @@
 </body>
 
 {% block scripts %}
-
+    
 {% endblock %}
 
 </html>

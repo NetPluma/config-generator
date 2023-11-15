@@ -1,17 +1,43 @@
+.placeholder{
+    color: rgb(21, 32, 43);
+    color: rgb(44, 44, 44);
+    color: rgb(33, 50, 68);
+    color: rgb(82, 121, 111);
+
+}
+
+
 body{
     background-color: rgb(44, 44, 44);
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Montserrat", sans-serif;
     }
-    
-textarea{
+
+.code-editor{
     background-color: rgb(21, 32, 43);
-    border: 5px,solid, rgb(33, 50, 68);
     border-radius: 5px;
-    color: white;
-    padding: 15px;
-    line-height: 140%;
+    height: 400px
 }
+
+button{
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: none;
+    background: rgb(82, 121, 111);
+    font-family: "Montserrat", sans-serif;
+    color: black;
+    padding: 4px 6px;
+}
+
+button:hover {
+    background: #FFD401;
+    color: black;
+    transition: all 0.2s ease-in-out;
+    right: 0;
+   }
+   
+
 
 .textarea-input-field {
     width: 40vw;
@@ -31,8 +57,6 @@ textarea{
     padding: 10px;
     justify-content: center;
 }
-
-
 
 @media (max-width: 600px) {
 .textarea-grid-container { 

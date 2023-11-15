@@ -24,6 +24,9 @@ SECRET_KEY = 'django-insecure-yy6z%4eogq1mf1ubh9662kfzb((y@dflouu2d@igoueov%to0)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("text/javascript", ".js", True)
 
 ALLOWED_HOSTS = []
 

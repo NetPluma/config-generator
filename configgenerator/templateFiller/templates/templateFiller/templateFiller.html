@@ -1,28 +1,49 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Template Filler{% endblock %}
 
 {% block content %}
 
-<form>
     <div class="textarea-grid-wrapper">
             <div class="textarea-grid-container">
                 <h2><label for="yaml-input">YAML</label></h2>
-                <textarea class="textarea-input-field" id="yaml-input" name="yaml-input" rows="15" cols="50">At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.</textarea>
+                <div class="textarea-input-field code-editor" id="yaml-input">
+---
+ntp_servers:
+    - 8.8.8.8
+    - 4.4.4.4
+                    </div>
                 <br>
             </div>
 
             <div class="textarea-grid-container">
                 <h2><label for="jinja-template">Template</label></h2>
-                <textarea class="textarea-input-field" id="jinja-template" name="jinja-template" rows="15" cols="50">At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.</textarea>
+                
+                <div id="template-input" class="textarea-input-field code-editor">{% verbatim %}
+{% for ntp_server in ntp_servers %}
+ntp server {{ ntp_server }};
+{% endfor %}
+{% endverbatim %}</div>
                 <br>
             </div>
     </div>
     
-    <input type="submit" value="Submit">
-</form>
-<p>Click the "Submit" button and the form-data will be sent to a page on the 
-server called "action_page.php".</p>
-test
+    <button class="" id="fill-template" type="button">Fill Template</button> 
 
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
+<script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/src-min-noconflict/ace.js' %}"> </script>
+
+<script type="text/javascript"> 
+    var yaml_editor = ace.edit("yaml-input");
+    yaml_editor.setTheme("ace/theme/cobalt");
+    yaml_editor.session.setMode("ace/mode/yaml");
+
+    var template_editor = ace.edit("template-input");
+    template_editor.setTheme("ace/theme/cobalt");
+    template_editor.session.setMode("ace/mode/yaml");
+</script>    
 {% endblock %}
