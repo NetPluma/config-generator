@@ -7,8 +7,7 @@
     <div class="textarea-grid-wrapper">
             <div class="textarea-grid-container">
                 <h2><label for="yaml-input">YAML</label></h2>
-                <div class="textarea-input-field code-editor" id="yaml-input">
----
+                <div class="textarea-input-field code-editor" id="yaml-input">---
 ntp_servers:
     - 8.8.8.8
     - 4.4.4.4
@@ -19,17 +18,32 @@ ntp_servers:
             <div class="textarea-grid-container">
                 <h2><label for="jinja-template">Template</label></h2>
                 
-                <div id="template-input" class="textarea-input-field code-editor">{% verbatim %}
-{% for ntp_server in ntp_servers %}
+                <div id="template-input" class="textarea-input-field code-editor">{% verbatim %}{%- for ntp_server in ntp_servers %}
 ntp server {{ ntp_server }};
-{% endfor %}
+{%- endfor %}
 {% endverbatim %}</div>
                 <br>
             </div>
     </div>
-    
-    <button class="" id="fill-template" type="button">Fill Template</button> 
-    Hello World
+    <div class="center-container-button">
+        <button id="fill-template" type="button">Fill Template</button> 
+    </div>
+    <br>
+
+    <div class="textarea-grid-wrapper">
+        <div class="textarea-grid-container">
+            <h2><label for="yaml-input">Output</label></h2>
+
+            <div id="config-output" class="textarea-input-field code-editor code-editor-output">Template output here</div>
+            <br>
+        </div>
+
+        <div class="textarea-grid-container">
+            <div class="textarea-input-field"></div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -45,5 +59,9 @@ ntp server {{ ntp_server }};
     var template_editor = ace.edit("template-input");
     template_editor.setTheme("ace/theme/cobalt");
     template_editor.session.setMode("ace/mode/yaml");
+
+    var output_editor = ace.edit("config-output");
+    output_editor.setTheme("ace/theme/cobalt");
+    output_editor.session.setMode("ace/mode/text");
 </script>    
 {% endblock %}

@@ -28,10 +28,12 @@ function create_config_from_template()
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             // Handle success
             console.log('Response:', this.responseText);
+            var response = JSON.parse(this.responseText);
+            console.log(response);
+            output_editor.getSession().setValue(response["data"]);
         }
     }
     xhr.send(JSON.stringify({yaml_content: yaml_content, jinja_content: jinja_content}));
-
     console.log("creating template")  
 }
 

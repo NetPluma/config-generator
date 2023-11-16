@@ -6,6 +6,9 @@ import jinja2
 import yaml
 # Create your views here.
 
+#======================== Custom import =====================
+
+#import templateHelper
 
 def index(request):
     template = loader.get_template("templateFiller/templateFiller.html")
@@ -18,9 +21,10 @@ def generate_config(request):
         data = json.loads(request.body)
         yaml_content = data.get('yaml_content')
         jinja_content = data.get('jinja_content')
-
-        parsed_yaml_dict = yaml.safe_load(yaml_content)
-
+        try: 
+            parsed_yaml_dict = yaml.safe_load(yaml_content)
+        except yaml.YAMLError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid YAML'}, status=422)
         jinja_environment = jinja2.Environment()
         template = jinja_environment.from_string(jinja_content)
         resulting_config = template.render(parsed_yaml_dict)
