@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Template Filler{% endblock %}
 
 {% block content %}
 
@@ -47,11 +46,13 @@ ntp server {{ ntp_server }};
 {% endblock %}
 
 {% block scripts %}
-
+<!-- AJAX and Page interaction -->
 <script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
+<!-- Code Editor -->
 <script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/src-min-noconflict/ace.js' %}"> </script>
 
 <script type="text/javascript"> 
+    // create all Editors
     var yaml_editor = ace.edit("yaml-input");
     yaml_editor.setTheme("ace/theme/cobalt");
     yaml_editor.session.setMode("ace/mode/yaml");

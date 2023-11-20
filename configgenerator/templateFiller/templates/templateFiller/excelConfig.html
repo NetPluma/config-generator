@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="textarea-grid-wrapper">
+        <div class="textarea-grid-container">
+            <h2><label for="yaml-input">Excel Upload</label></h2>
+            
+        </div>
+
+        <div class="textarea-grid-container">
+            <h2><label for="jinja-template">Template</label></h2>
+            
+        </div>
+    </div>
+    <div class="center-container-button">
+        <button id="fill-template" type="button">Fill Template</button> 
+    </div>
+    <br>
+
+    <div class="textarea-grid-wrapper">
+        <div class="textarea-grid-container">
+            <h2><label for="yaml-input">Placeholder</label></h2>
+
+        </div>
+
+        <div class="textarea-grid-container">
+            <div class="textarea-input-field">
+                <h2><label for="yaml-input">Placeholder</label></h2>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<!-- AJAX and Page interaction -->
+<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
+<!-- Code Editor -->
+<script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/src-min-noconflict/ace.js' %}"> </script>
+
+<script type="text/javascript"> 
+    // create all Editors
+    //var yaml_editor = ace.edit("yaml-input");
+    //yaml_editor.setTheme("ace/theme/cobalt");
+    //yaml_editor.session.setMode("ace/mode/yaml");
+
+</script>    
+{% endblock %}

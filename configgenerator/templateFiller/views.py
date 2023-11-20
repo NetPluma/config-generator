@@ -15,7 +15,15 @@ def index(request):
     context = { }
     return HttpResponse(template.render(context, request))
 
-    
+def generate_from_excel(request):
+    template = loader.get_template("templateFiller/excelConfig.html")
+    context = { }
+    return HttpResponse(template.render(context, request))
+
+def upload_excel(request):
+    return
+
+# AJAX - posting YAML and Jinja Template    
 def generate_config(request):
     if request.method == "POST":
         data = json.loads(request.body)

@@ -71,6 +71,38 @@ button:hover {
     justify-content: center;
 }
 
+.navbar {
+    width: 100%;
+    background-color: #3d3d3d; /* Change as per your color scheme */
+    overflow: auto;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    float: left;
+}
+
+.nav-links li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-links li a:hover {
+    color: black;
+    background: #FFD401;
+    transition: all 0.2s ease-in-out;
+}
+
+
+
 @media (max-width: 600px) {
 .textarea-grid-container { 
     grid-template-columns: repeat(1, 1fr); 
@@ -78,4 +110,6 @@ button:hover {
 .textarea-input-field {
     width: 80vw;
 }
+
+
 }

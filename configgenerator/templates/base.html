@@ -21,9 +21,13 @@
     {% endblock %}
 
 
-    {% block nav %}
-
-    {% endblock %}
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'Jinja-Templater' %}">Jinja</a></li>
+            <li><a href="{% url 'Excel-Config' %}">Excel-Config</a></li>
+            <!-- Add more navigation links here -->
+        </ul>
+    </nav>
 
 
     <main>
@@ -33,7 +37,7 @@
     </main>
 
     {% block footer %}
-
+    <!-- This block will be overridden by footer templates -->
     {% endblock %}
 
 
