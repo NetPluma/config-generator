@@ -5,6 +5,9 @@ import json
 import jinja2
 import yaml
 
+# For Excel Interaction
+import pandas
+
 # forms
 
 from .forms import ExcelUploadForm
@@ -31,8 +34,16 @@ def upload_excel(request):
         form = ExcelUploadForm(request.POST, request.FILES)
         if form.is_valid():
             # Process the form
-            # ...
 
+            # get file from request => print(raw_excel_file) -> gibt den Dateinamen zurück
+            raw_excel_file = request.FILES['excel_file']
+
+            # Read the Excel Data
+            excel_content = pandas.read_excel(raw_excel_file)
+
+            # Turn Excel Spreadsheet to Dict
+            spreadsheet_dict = excel_content.to_dict(orient='records')
+            print(f"Spreadsheet Dict: {spreadsheet_dict}")
             # Return a JSON response for Ajax requests
             return JsonResponse({'message': 'Success!','message': 'Spreadsheet received'}, status=200)
 
