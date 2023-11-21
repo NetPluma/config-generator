@@ -4,6 +4,11 @@ from django.template import loader
 import json
 import jinja2
 import yaml
+
+# forms
+
+from .forms import ExcelUploadForm
+
 # Create your views here.
 
 #======================== Custom import =====================
@@ -17,11 +22,24 @@ def index(request):
 
 def generate_from_excel(request):
     template = loader.get_template("templateFiller/excelConfig.html")
-    context = { }
+    form = ExcelUploadForm()
+    context = {'form': form}
     return HttpResponse(template.render(context, request))
 
 def upload_excel(request):
-    return
+    if request.method == 'POST':
+        form = ExcelUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Process the form
+            # ...
+
+            # Return a JSON response for Ajax requests
+            return JsonResponse({'message': 'Success!','message': 'Spreadsheet received'}, status=200)
+
+            # Handle regular form submission response
+            # ...
+            #return JsonResponse({'status': 'error', 'message': 'Regular form submission not implemented'}, status=501)
+    return JsonResponse({'status': 'error', 'message': 'Invalid form'}, status=400)
 
 # AJAX - posting YAML and Jinja Template    
 def generate_config(request):

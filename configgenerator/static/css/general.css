@@ -101,7 +101,19 @@ button:hover {
     transition: all 0.2s ease-in-out;
 }
 
+.small-flex-box{
+    display: flex;           /* Enables Flexbox */
+    align-items: center;     /* Aligns items vertically in the center */
+    justify-content: center; /* Centers items horizontally */
+}
 
+.small-flex-box-content{
+    margin-left: 10px;
+    opacity: 0; /* Start invisible */
+    transition: opacity 0.5s ease; /* Transition effect for the opacity */
+    min-width: 250px; /* Set a minimum width */
+    min-height: 20px; /* Set a minimum height */
+}
 
 @media (max-width: 600px) {
 .textarea-grid-container { 

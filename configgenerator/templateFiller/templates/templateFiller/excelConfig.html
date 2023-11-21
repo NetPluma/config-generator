@@ -6,12 +6,25 @@
 
     <div class="textarea-grid-wrapper">
         <div class="textarea-grid-container">
-            <h2><label for="yaml-input">Excel Upload</label></h2>
-            
+            <h2><label for="spreadsheet-input">Excel Upload</label></h2>
+            <form class="textarea-input-field" id="spreadsheet-input" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="small-flex-box">
+                    <button id="spreadsheet-submit-button"type="submit">Upload</button>
+                    <div class="small-flex-box-content" id="spreadsheet-message-box"></div>
+                </div>
+            </form>
         </div>
 
         <div class="textarea-grid-container">
             <h2><label for="jinja-template">Template</label></h2>
+                
+            <div id="template-input" class="textarea-input-field code-editor">{% verbatim %}{%- for ntp_server in ntp_servers %}
+ntp server {{ ntp_server }};
+{%- endfor %}
+{% endverbatim %}</div>
+            <br>
             
         </div>
     </div>
@@ -22,7 +35,13 @@
 
     <div class="textarea-grid-wrapper">
         <div class="textarea-grid-container">
-            <h2><label for="yaml-input">Placeholder</label></h2>
+            <h2><label for="yaml-input">YAML</label></h2>
+                <div class="textarea-input-field code-editor" id="yaml-input">---
+ntp_servers:
+    - 8.8.8.8
+    - 4.4.4.4
+                    </div>
+                <br>
 
         </div>
 
@@ -37,16 +56,25 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- AJAX and Page interaction -->
-<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
+<!-- LIBs -->
 <!-- Code Editor -->
 <script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/src-min-noconflict/ace.js' %}"> </script>
+<!-- JQuery -->
+<script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/jquery-3_7_1-min.js' %}"> </script>
+
+<!-- custom -->
+<!-- AJAX and Page interaction -->
+<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
 
 <script type="text/javascript"> 
     // create all Editors
-    //var yaml_editor = ace.edit("yaml-input");
-    //yaml_editor.setTheme("ace/theme/cobalt");
-    //yaml_editor.session.setMode("ace/mode/yaml");
+    var yaml_editor = ace.edit("yaml-input");
+    yaml_editor.setTheme("ace/theme/cobalt");
+    yaml_editor.session.setMode("ace/mode/yaml");
+
+    var template_editor = ace.edit("template-input");
+    template_editor.setTheme("ace/theme/cobalt");
+    template_editor.session.setMode("ace/mode/yaml");
 
 </script>    
 {% endblock %}

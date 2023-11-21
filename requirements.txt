@@ -1,3 +1,4 @@
 django
 Jinja2
 PyYAML
+pandas 
