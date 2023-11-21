@@ -43,6 +43,13 @@ button{
     padding: 4px 6px;
 }
 
+button:disabled {
+    /* Style for the disabled state */
+    background-color: rgba(82, 121, 111, 0.616);
+    color: darkgray;
+    cursor: not-allowed;
+}
+
 button:hover {
     background: #FFD401;
     color: black;

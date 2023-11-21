@@ -29,6 +29,7 @@ def generate_from_excel(request):
     context = {'form': form}
     return HttpResponse(template.render(context, request))
 
+# AJAX - posting Excel, reading content and save it to session
 def upload_excel(request):
     if request.method == 'POST':
         form = ExcelUploadForm(request.POST, request.FILES)
@@ -43,13 +44,10 @@ def upload_excel(request):
 
             # Turn Excel Spreadsheet to Dict
             spreadsheet_dict = excel_content.to_dict(orient='records')
-            print(f"Spreadsheet Dict: {spreadsheet_dict}")
+            request.session['spreadsheet_dict'] = spreadsheet_dict
             # Return a JSON response for Ajax requests
             return JsonResponse({'message': 'Success!','message': 'Spreadsheet received'}, status=200)
 
-            # Handle regular form submission response
-            # ...
-            #return JsonResponse({'status': 'error', 'message': 'Regular form submission not implemented'}, status=501)
     return JsonResponse({'status': 'error', 'message': 'Invalid form'}, status=400)
 
 # AJAX - posting YAML and Jinja Template    
@@ -69,5 +67,31 @@ def generate_config(request):
         print(yaml_content,"\n\n\n" ,jinja_content,"\n\n\n",resulting_config)
 
 
+        return JsonResponse({'status': 'success', 'message': 'Data received', 'data': resulting_config}, status=200)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+
+# AJAX - generate multiple configs 
+def generate_multiple_config(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        yaml_content = data.get('yaml_content')
+        jinja_content = data.get('jinja_content')
+        try: 
+            parsed_yaml_dict = yaml.safe_load(yaml_content)
+        except yaml.YAMLError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid YAML'}, status=422)
+        
+        # setup jinja environment
+        jinja_environment = jinja2.Environment()
+        template = jinja_environment.from_string(jinja_content)
+
+        # update dict entries from excel with the content from yaml files
+        for individual_dict in request.session['spreadsheet_dict']:
+            individual_dict.update(parsed_yaml_dict)        
+            resulting_config = template.render(individual_dict)
+            print(f"Resulting config {resulting_config}")
+        print(f"SESSION UPDATED DICT {request.session['spreadsheet_dict']}")
+        
         return JsonResponse({'status': 'success', 'message': 'Data received', 'data': resulting_config}, status=200)
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)

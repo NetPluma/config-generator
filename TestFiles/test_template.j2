@@ -1,0 +1,4 @@
+hostname {{name}}-{{inv_nr}}-{{location}}
+{%- for ntp_server in ntp_servers %}
+ntp server {{ ntp_server }};
+{%- endfor %}
