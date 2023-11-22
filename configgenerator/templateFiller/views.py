@@ -18,17 +18,25 @@ from .forms import ExcelUploadForm
 
 #import templateHelper
 
+#======================== Index Page =====================
 def index(request):
     template = loader.get_template("templateFiller/templateFiller.html")
     context = { }
     return HttpResponse(template.render(context, request))
 
+
+
+#======================== Excel Config Page =====================
 def generate_from_excel(request):
     template = loader.get_template("templateFiller/excelConfig.html")
+    # Document upload form
     form = ExcelUploadForm()
     context = {'form': form}
     return HttpResponse(template.render(context, request))
 
+
+
+#======================== Upload Page for Excel-Spreadsheet =====================
 # AJAX - posting Excel, reading content and save it to session
 def upload_excel(request):
     if request.method == 'POST':
@@ -50,36 +58,46 @@ def upload_excel(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid form'}, status=400)
 
+
+
+#======================== Generate a single config =====================
 # AJAX - posting YAML and Jinja Template    
 def generate_config(request):
     if request.method == "POST":
+        # prepare data from yaml and j2 input editors
         data = json.loads(request.body)
         yaml_content = data.get('yaml_content')
         jinja_content = data.get('jinja_content')
         try: 
+            # checking the yaml structure for validity
             parsed_yaml_dict = yaml.safe_load(yaml_content)
         except yaml.YAMLError:
+            # return an error if the yaml structure is wrong and therefore cant be used for the jinja template rendering
             return JsonResponse({'status': 'error', 'message': 'Invalid YAML'}, status=422)
+        # setup jinja environment and render the template
         jinja_environment = jinja2.Environment()
         template = jinja_environment.from_string(jinja_content)
         resulting_config = template.render(parsed_yaml_dict)
         
-        print(yaml_content,"\n\n\n" ,jinja_content,"\n\n\n",resulting_config)
-
+        #print(yaml_content,"\n\n\n" ,jinja_content,"\n\n\n",resulting_config)
 
         return JsonResponse({'status': 'success', 'message': 'Data received', 'data': resulting_config}, status=200)
-    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
 
 
+#======================== Generate multiple config from spreadsheet =====================
 # AJAX - generate multiple configs 
 def generate_multiple_config(request):
     if request.method == "POST":
+        # prepare data from yaml and j2 input editors
         data = json.loads(request.body)
         yaml_content = data.get('yaml_content')
         jinja_content = data.get('jinja_content')
-        try: 
+        try:
+            # checking the yaml structure for validity
             parsed_yaml_dict = yaml.safe_load(yaml_content)
         except yaml.YAMLError:
+            # return an error if the yaml structure is wrong and therefore cant be used for the jinja template rendering
             return JsonResponse({'status': 'error', 'message': 'Invalid YAML'}, status=422)
         
         # setup jinja environment
@@ -87,11 +105,13 @@ def generate_multiple_config(request):
         template = jinja_environment.from_string(jinja_content)
 
         # update dict entries from excel with the content from yaml files
+        # the list contains a dict for every entry in an excel file (so a dict for every device)
+        # every dict gets the the content from the YAML file
         for individual_dict in request.session['spreadsheet_dict']:
             individual_dict.update(parsed_yaml_dict)        
             resulting_config = template.render(individual_dict)
             print(f"Resulting config {resulting_config}")
-        print(f"SESSION UPDATED DICT {request.session['spreadsheet_dict']}")
+        #print(f"SESSION UPDATED DICT {request.session['spreadsheet_dict']}")
         
         return JsonResponse({'status': 'success', 'message': 'Data received', 'data': resulting_config}, status=200)
-    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Only POST allowed'}, status=405)
