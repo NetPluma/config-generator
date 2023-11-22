@@ -4,6 +4,7 @@ from django.template import loader
 import json
 import jinja2
 import yaml
+import datetime
 
 # For Excel Interaction
 import pandas
@@ -95,7 +96,11 @@ def generate_multiple_config(request):
         jinja_content = data.get('jinja_content')
         try:
             # checking the yaml structure for validity
-            parsed_yaml_dict = yaml.safe_load(yaml_content)
+            parsed_yaml = yaml.safe_load(yaml_content)
+            converted_yaml_dict = {}
+            for dict in parsed_yaml:
+                converted_yaml_dict.update(dict)
+            print(f"Combined DICT {converted_yaml_dict}\n\n")    
         except yaml.YAMLError:
             # return an error if the yaml structure is wrong and therefore cant be used for the jinja template rendering
             return JsonResponse({'status': 'error', 'message': 'Invalid YAML'}, status=422)
@@ -107,10 +112,19 @@ def generate_multiple_config(request):
         # update dict entries from excel with the content from yaml files
         # the list contains a dict for every entry in an excel file (so a dict for every device)
         # every dict gets the the content from the YAML file
+        print(f"YAML: {converted_yaml_dict}")
+        print(type(converted_yaml_dict))
+
         for individual_dict in request.session['spreadsheet_dict']:
-            individual_dict.update(parsed_yaml_dict)        
+            print(f"Device dict from spreadsheet {individual_dict}")
+            individual_dict.update(converted_yaml_dict)        
             resulting_config = template.render(individual_dict)
             print(f"Resulting config {resulting_config}")
+
+            # Getting the current date and formatting it as a string
+            current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+            with open(f"output/{current_date}_SWIS-SW{individual_dict['switch_number']}.txt", 'w') as file:
+                file.write(resulting_config)
         #print(f"SESSION UPDATED DICT {request.session['spreadsheet_dict']}")
         
         return JsonResponse({'status': 'success', 'message': 'Data received', 'data': resulting_config}, status=200)
