@@ -1,0 +1,134 @@
+.placeholder{
+    color: rgb(21, 32, 43);
+    color: rgb(44, 44, 44);
+    color: rgb(33, 50, 68);
+    color: rgb(82, 121, 111);
+
+}
+
+
+body{
+    background-color: rgb(44, 44, 44);
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    }
+
+.code-editor{
+    background-color: rgb(21, 32, 43);
+    border-radius: 5px;
+    height: 400px
+}
+
+
+
+.center-container-button {
+    display: flex;
+    justify-content: center;
+}
+
+.center-container-output{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+button{
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: none;
+    background: rgb(82, 121, 111);
+    font-family: "Montserrat", sans-serif;
+    color: black;
+    padding: 4px 6px;
+}
+
+button:disabled {
+    /* Style for the disabled state */
+    background-color: rgba(82, 121, 111, 0.616);
+    color: darkgray;
+    cursor: not-allowed;
+}
+
+button:hover {
+    background: #FFD401;
+    color: black;
+    transition: all 0.2s ease-in-out;
+    right: 0;
+   }
+   
+
+
+.textarea-input-field {
+    width: 40vw;
+    object-fit: contain;
+}
+.textarea-grid-container{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+}
+
+.textarea-grid-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    justify-content: center;
+}
+
+.navbar {
+    width: 100%;
+    background-color: #3d3d3d; /* Change as per your color scheme */
+    overflow: auto;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    float: left;
+}
+
+.nav-links li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-links li a:hover {
+    color: black;
+    background: #FFD401;
+    transition: all 0.2s ease-in-out;
+}
+
+.small-flex-box{
+    display: flex;           /* Enables Flexbox */
+    align-items: center;     /* Aligns items vertically in the center */
+    justify-content: center; /* Centers items horizontally */
+}
+
+.small-flex-box-content{
+    margin-left: 10px;
+    opacity: 0; /* Start invisible */
+    transition: opacity 0.5s ease; /* Transition effect for the opacity */
+    min-width: 250px; /* Set a minimum width */
+    min-height: 20px; /* Set a minimum height */
+}
+
+@media (max-width: 600px) {
+.textarea-grid-container { 
+    grid-template-columns: repeat(1, 1fr); 
+}
+.textarea-input-field {
+    width: 80vw;
+}
+
+
+}

@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    {% csrf_token %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    {% block head_content %} 
+    
+    {% endblock%}
+
+
+    {% block title %}
+
+    {% endblock %}
+
+</head>
+<body>
+    {% block header %}
+
+    {% endblock %}
+
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'Jinja-Templater' %}">Jinja</a></li>
+            <li><a href="{% url 'Excel-Config' %}">Excel-Config</a></li>
+            <!-- Add more navigation links here -->
+        </ul>
+    </nav>
+
+
+    <main>
+        {% block content %}
+        <!-- This block will be overridden by child templates -->
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+    <!-- This block will be overridden by footer templates -->
+    {% endblock %}
+
+
+    {% block alert %}
+
+    {% endblock %}
+</body>
+
+{% block scripts %}
+    
+{% endblock %}
+
+</html>
