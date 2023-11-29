@@ -88,9 +88,10 @@ function create_multiple_configs_from_template()
             // [...]
             console.log('Response:', this.responseText);
             var response = JSON.parse(this.responseText);
-            console.log(response);
-            // Set the response data to the output_editor
-            output_editor.getSession().setValue(response["data"]);
+
+            generator_output = document.getElementById('generator-output')
+            generator_output.style.color = SUCCESS_COLOR;
+            generator_output.innerHTML = response.message ;
         }
     }
     xhr.send(JSON.stringify({yaml_content: yaml_content, jinja_content: jinja_content}));

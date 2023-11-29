@@ -5,14 +5,13 @@ import json
 import jinja2
 import yaml
 import datetime
-
+import os
 # For Excel Interaction
 import pandas
 
 # forms
-
 from .forms import ExcelUploadForm
-
+from .templateHelper import check_mac_formatting
 # Create your views here.
 
 #======================== Custom import =====================
@@ -87,9 +86,11 @@ def generate_config(request):
 
 
 #======================== Generate multiple config from spreadsheet =====================
-# AJAX - generate multiple configs 
+# AJAX - generate multiple configs for devices and also prepares the dhcp configuration
 def generate_multiple_config(request):
     if request.method == "POST":
+        generated_config_count = 0
+
         # prepare data from yaml and j2 input editors
         data = json.loads(request.body)
         yaml_content = data.get('yaml_content')
@@ -100,7 +101,6 @@ def generate_multiple_config(request):
             converted_yaml_dict = {}
             for dict in parsed_yaml:
                 converted_yaml_dict.update(dict)
-            print(f"Combined DICT {converted_yaml_dict}\n\n")    
         except yaml.YAMLError:
             # return an error if the yaml structure is wrong and therefore cant be used for the jinja template rendering
             return JsonResponse({'status': 'error', 'message': 'Invalid YAML'}, status=422)
@@ -108,24 +108,37 @@ def generate_multiple_config(request):
         # setup jinja environment
         jinja_environment = jinja2.Environment()
         template = jinja_environment.from_string(jinja_content)
+        
+        with open(f"input/dhcp_config.j2", 'r') as dhcp_template_file:
+            dhcp_template = jinja_environment.from_string(dhcp_template_file.read())
 
         # update dict entries from excel with the content from yaml files
         # the list contains a dict for every entry in an excel file (so a dict for every device)
         # every dict gets the the content from the YAML file
-        print(f"YAML: {converted_yaml_dict}")
-        print(type(converted_yaml_dict))
 
-        for individual_dict in request.session['spreadsheet_dict']:
-            print(f"Device dict from spreadsheet {individual_dict}")
-            individual_dict.update(converted_yaml_dict)        
-            resulting_config = template.render(individual_dict)
-            print(f"Resulting config {resulting_config}")
+        # Getting the current date and formatting it as a string
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        with open(f"output/{current_date}_DHCP_Config.cfg", 'a') as dhcp_config_file:
+            # generate a config for each specified device
+            for individual_dict in request.session['spreadsheet_dict']:
+                individual_dict.update(converted_yaml_dict)
+                device_name = f"{individual_dict['hostname']}"
 
-            device_name = f"{individual_dict['prefix']}{individual_dict['switch_number']}"
+                # Take corrective measures IF the formatting of data wrong
+                individual_dict['mac'], individual_dict['mac_without_colon'] = check_mac_formatting(individual_dict['mac'])
 
-            with open(f"output/{device_name}_{individual_dict['mac']}.cfg", 'w') as file:
-                file.write(resulting_config)
-        #print(f"SESSION UPDATED DICT {request.session['spreadsheet_dict']}")
-        
-        return JsonResponse({'status': 'success', 'message': 'Data received', 'data': resulting_config}, status=200)
+                # render a new config
+                resulting_config = template.render(individual_dict)
+                # write the finished config to the file system
+                with open(f"output/{device_name}_{individual_dict['mac_without_colon']}.cfg", 'w') as file:
+                    file.write(resulting_config)
+
+                dhcp_config_entry = dhcp_template.render(individual_dict)
+                # Add an entry to the dhcp config file for this device
+                dhcp_config_file.write(dhcp_config_entry)
+                
+                # for Metadata
+                generated_config_count += 1    
+
+        return JsonResponse({'status': 'success', 'message': f"Successfully created {generated_config_count} Configs", 'data': generated_config_count}, status=200)
     return JsonResponse({'status': 'error', 'message': 'Only POST allowed'}, status=405)
