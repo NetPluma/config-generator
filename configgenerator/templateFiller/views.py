@@ -121,9 +121,9 @@ def generate_multiple_config(request):
             resulting_config = template.render(individual_dict)
             print(f"Resulting config {resulting_config}")
 
-            # Getting the current date and formatting it as a string
-            current_date = datetime.datetime.now().strftime("%Y-%m-%d")
-            with open(f"output/{current_date}_SWIS-SW{individual_dict['switch_number']}.txt", 'w') as file:
+            device_name = f"{individual_dict['prefix']}{individual_dict['switch_number']}"
+
+            with open(f"output/{device_name}_{individual_dict['mac']}.cfg", 'w') as file:
                 file.write(resulting_config)
         #print(f"SESSION UPDATED DICT {request.session['spreadsheet_dict']}")
         
