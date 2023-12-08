@@ -46,10 +46,14 @@ ntp server {{ ntp_server }};
 {% endblock %}
 
 {% block scripts %}
-<!-- AJAX and Page interaction -->
-<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
+
+<!-- JQuery ALWAYS ON TOP-->
+<script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/jquery-3_7_1-min.js' %}"> </script>
 <!-- Code Editor -->
 <script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/src-min-noconflict/ace.js' %}"> </script>
+
+<!-- AJAX and Page interaction -->
+<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
 
 <script type="text/javascript"> 
     // create all Editors
