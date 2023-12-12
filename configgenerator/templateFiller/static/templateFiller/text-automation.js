@@ -2,7 +2,11 @@ console.log("templateFiller.js")
 
 const SUCCESS_COLOR = 'rgb(163, 242, 17)';
 const ERROR_COLOR = 'rgb(252, 83, 83)';
+const JINJA_HELPER_FIELD = document.getElementById('jinja-helper');    
+let JINJA_VARIABLE_INTERVAL;
+let JINJA_VARIABLE_INTERVAL_RUNNING = false;
 
+template_editor.session.on('change', start_interval_timer );
 
 //let fill_template_button = document.getElementById("fill-template")
 
@@ -201,9 +205,24 @@ jQuery(document).ready(function(){
 
 
 //=========================================== local code editing and testing functions ========================================================
+function start_interval_timer()
+{
+    if (!JINJA_VARIABLE_INTERVAL_RUNNING)
+    {
+        JINJA_VARIABLE_INTERVAL = setInterval(find_jinja_variables, 1200);
+        JINJA_VARIABLE_INTERVAL_RUNNING = true;
+    }
+}
 
+function end_interval()
+{
+    // reset the timer, that would show the variables
+    clearInterval(JINJA_VARIABLE_INTERVAL);
+    JINJA_VARIABLE_INTERVAL_RUNNING = false;
+}
 
-//let interval = setInterval(find_jinja_variables, 5000); // 2000 milliseconds = 2 seconds
+// inital variables are shown
+find_jinja_variables();
 function find_jinja_variables()
 {
     let jinja_content = template_editor.getSession().getValue();
@@ -212,7 +231,7 @@ function find_jinja_variables()
     // Regular expression patterns for Jinja variables
     const patterns = [
         /\{\{(.*?)\}\}/g, // pattern for variables
-        /\{\%\s*for\s+\w+\s+in\s+([\w\.]+)\s*\%\}/g, // pattern for loop
+        /{%[-]?\s*for\s+\w+\s+in\s+(\S+)\s*%}/g, // pattern for loop
         /\{\%\s*if\s+([\w\.]+)\s*\%\}|\{\%\s*if\s+\w+\s+in\s+([\w\.]+)\s*\%\}/g // pattern for if statement
     ];
 
@@ -226,6 +245,8 @@ function find_jinja_variables()
             allMatches = allMatches.concat(match.slice(1).filter(Boolean));
         }
     });
-    console.log(allMatches)
+    JINJA_HELPER_FIELD.innerHTML = allMatches;
+    end_interval()
+    console.log(allMatches);
 }
 

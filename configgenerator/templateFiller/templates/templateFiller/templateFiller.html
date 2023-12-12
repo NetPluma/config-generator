@@ -31,14 +31,16 @@ ntp server {{ ntp_server }};
 
     <div class="textarea-grid-wrapper">
         <div class="textarea-grid-container">
-            <h2><label for="yaml-input">Output</label></h2>
+            <h2>Output</h2>
 
             <div id="config-output" class="textarea-input-field code-editor code-editor-output">Template output here</div>
             <br>
         </div>
 
         <div class="textarea-grid-container">
-            <div class="textarea-input-field"></div>
+            <h2>Jinja Helper</h2>
+            <div id="jinja-helper" class="textarea-input-field"></div>
+            <br>
         </div>
     </div>
 
@@ -52,8 +54,7 @@ ntp server {{ ntp_server }};
 <!-- Code Editor -->
 <script charset="utf-8" type="text/javascript" src="{% static 'templateFiller/src-min-noconflict/ace.js' %}"> </script>
 
-<!-- AJAX and Page interaction -->
-<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>
+
 
 <script type="text/javascript"> 
     // create all Editors
@@ -68,5 +69,7 @@ ntp server {{ ntp_server }};
     var output_editor = ace.edit("config-output");
     output_editor.setTheme("ace/theme/cobalt");
     output_editor.session.setMode("ace/mode/text");
-</script>    
+</script>  
+<!-- AJAX and Page interaction -->
+<script type="text/javascript" src="{% static 'templateFiller/text-automation.js' %}"> </script>  
 {% endblock %}
