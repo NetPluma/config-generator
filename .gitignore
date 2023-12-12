@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 configgenerator/output/*.txt
+configgenerator/output/*.cfg
 example/
 # C extensions
 *.so

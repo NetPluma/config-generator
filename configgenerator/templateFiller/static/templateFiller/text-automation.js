@@ -9,17 +9,20 @@ const ERROR_COLOR = 'rgb(252, 83, 83)';
 // deprecated with ACE editor
 //let yaml_input = document.getElementById("yaml-input");
 //let jinja_template_input = document.getElementById("jinja-template-input");
-if (window.location.pathname === 'http://127.0.0.1:8000/templateFiller/') {
-    // Execute specific JavaScript code for this URL
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('fill-template').addEventListener('click', create_config_from_template);
-    });
-}
+//if (window.location.pathname === 'http://127.0.0.1:8000/templateFiller/') {
+    
+//}
 
 if (window.location.href.includes('Excel-Config/')) {
     // Execute specific JavaScript code for this URL
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('fill-multiple-template').addEventListener('click', create_multiple_configs_from_template);
+    });
+}
+else{
+    // Execute specific JavaScript code for this URL
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('fill-template').addEventListener('click', create_config_from_template);
     });
 }
 
@@ -88,9 +91,10 @@ function create_multiple_configs_from_template()
             // [...]
             console.log('Response:', this.responseText);
             var response = JSON.parse(this.responseText);
-            console.log(response);
-            // Set the response data to the output_editor
-            output_editor.getSession().setValue(response["data"]);
+
+            generator_output = document.getElementById('generator-output')
+            generator_output.style.color = SUCCESS_COLOR;
+            generator_output.innerHTML = response.message ;
         }
     }
     xhr.send(JSON.stringify({yaml_content: yaml_content, jinja_content: jinja_content}));
