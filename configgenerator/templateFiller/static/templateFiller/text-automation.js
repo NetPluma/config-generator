@@ -184,3 +184,44 @@ jQuery(document).ready(function(){
         });
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== local code editing and testing functions ========================================================
+
+
+//let interval = setInterval(find_jinja_variables, 5000); // 2000 milliseconds = 2 seconds
+function find_jinja_variables()
+{
+    let jinja_content = template_editor.getSession().getValue();
+    //let jinja_variables = jinja_content.match(REGEX_JINJA_VARIABLES);
+
+    // Regular expression patterns for Jinja variables
+    const patterns = [
+        /\{\{(.*?)\}\}/g, // pattern for variables
+        /\{\%\s*for\s+\w+\s+in\s+([\w\.]+)\s*\%\}/g, // pattern for loop
+        /\{\%\s*if\s+([\w\.]+)\s*\%\}|\{\%\s*if\s+\w+\s+in\s+([\w\.]+)\s*\%\}/g // pattern for if statement
+    ];
+
+    let allMatches = [];
+
+    // Find all matches
+    patterns.forEach(pattern => {
+        let match;
+        while ((match = pattern.exec(jinja_content)) !== null) {
+            // Add the non-null capturing groups to allMatches
+            allMatches = allMatches.concat(match.slice(1).filter(Boolean));
+        }
+    });
+    console.log(allMatches)
+}
+
