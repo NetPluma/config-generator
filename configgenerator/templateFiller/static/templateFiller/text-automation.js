@@ -230,8 +230,8 @@ function find_jinja_variables()
 
     // Regular expression patterns for Jinja variables
     const patterns = [
-        /\{\{(.*?)\}\}/g, // pattern for variables
-        /{%[-]?\s*for\s+\w+\s+in\s+(\S+)\s*%}/g, // pattern for loop
+        /\{\{\s*([a-zA-Z0-9.-_]+)\s*\}\}/g, // pattern for variables
+        /{%[-]?\s*for\s+\w+\s+in\s+([a-zA-Z0-9.-_]+)\s*%}/g, // pattern for loop
         /\{\%\s*if\s+([\w\.]+)\s*\%\}|\{\%\s*if\s+\w+\s+in\s+([\w\.]+)\s*\%\}/g // pattern for if statement
     ];
 
